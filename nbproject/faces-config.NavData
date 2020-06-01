@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene Scope="Project" version="2">
+    <Scope Scope="Faces Configuration Only"/>
+    <Scope Scope="Project">
+        <Node id="C:/Users/jojo/Documents/Jacson_Facul/5Semestre/FRAMEWORK (Frank)/N2/frames1_2020-master/web/template/template.xhtml" x="400" y="150" zoom="true"/>
+        <Node id="C:/Users/jojo/Documents/Jacson_Facul/5Semestre/FRAMEWORK (Frank)/N2/frames1_2020-master/web/views/aluno/cadastrarAluno.xhtml" x="400" y="300" zoom="true"/>
+        <Node id="C:/Users/jojo/Documents/Jacson_Facul/5Semestre/FRAMEWORK (Frank)/N2/frames1_2020-master/web/views/professor/cadastrarProfessor.xhtml" x="150" y="150" zoom="true"/>
+        <Node id="C:/Users/jojo/Documents/Jacson_Facul/5Semestre/FRAMEWORK (Frank)/N2/frames1_2020-master/web/index.xhtml" x="650" y="150" zoom="true"/>
+        <Node id="C:/Users/jojo/Documents/Jacson_Facul/5Semestre/FRAMEWORK (Frank)/N2/frames1_2020-master/web/views/aluno/buscarAluno.xhtml" x="150" y="300" zoom="true"/>
+    </Scope>
+    <Scope Scope="All Faces Configurations"/>
+</Scene>
