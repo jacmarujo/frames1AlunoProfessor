@@ -18,7 +18,7 @@ public class AreaRepository extends Conexao {
 
     public void salvar(AreaModel areaModel) {
         super.inicializa();
-        super.getSess().save(areaModel);
+        super.getSess().saveOrUpdate(areaModel);
         super.executar();
 
     }
@@ -30,13 +30,27 @@ public class AreaRepository extends Conexao {
         super.executar();
         return listaDeArea;
     }
-
-    public AreaModel buscarPorId(long id) {
+    
+    public List<AreaModel> buscarPorDescricao(String descricao){
+        List<AreaModel> listaDeAreas = new ArrayList<>();
         super.inicializa();
-        AreaModel areaModel = (AreaModel) super.getSess().createQuery("from AreaModel where idArea" + id).list();
+        listaDeAreas = super.getSess().createQuery("from AreaModel where UPPER(descricao) like '%" + descricao.toUpperCase() + "%'").list();
         super.executar();
-        return areaModel;
+        return listaDeAreas;
+    }
 
+    public AreaModel buscarPorId(int idArea) {
+        AreaModel area = new AreaModel();
+        super.inicializa();
+        area = (AreaModel) super.getSess().get(AreaModel.class, idArea);
+        super.executar();
+        return area;
+    }
+    
+    public void excluirPorID(int idArea){
+        super.inicializa();
+        AreaModel area = (AreaModel) super.getSess().get(AreaModel.class, idArea);
+        super.getSess().delete(area);
+        super.executar();
     }
 }
-

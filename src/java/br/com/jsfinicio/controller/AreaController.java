@@ -7,15 +7,20 @@ package br.com.jsfinicio.controller;
 
 import br.com.jsfinicio.model.AreaModel;
 import br.com.jsfinicio.repository.AreaRepository;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
  * @author jacson
  */
 @ManagedBean
+@ViewScoped
 public class AreaController {
 
     private AreaModel areaModel;
@@ -29,13 +34,33 @@ public class AreaController {
     }
 
     public void salvar() {
-        this.areaRepository.salvar(this.areaModel);
+        try {
+            this.areaRepository.salvar(this.areaModel);
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage("", "Operação realizada com sucesso!"));
+            this.areaModel = new AreaModel();
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage("", "Cadastro não realizado!"));
+        }
     }
 
-    public void buscar() {
+    public void buscarTodos() {
         this.listaDeArea = this.areaRepository.buscarTodos();
     }
 
+    public void buscarPorDescricao() {
+        this.listaDeArea = this.areaRepository.buscarPorDescricao(this.areaModel.getDescricao());
+    }
+
+    public void excluirPorID(int idArea) {
+        this.areaRepository.excluirPorID(idArea);
+    }
+
+    public String editarPorID(int idArea) throws IOException {
+        this.areaModel = this.areaRepository.buscarPorId(idArea);
+
+        return "editarArea.xhtml?faces-redirect=true";
+    }
+    
     public AreaModel getAreaModel() {
         return areaModel;
     }
@@ -59,6 +84,6 @@ public class AreaController {
     public void setListaDeArea(List<AreaModel> listaDeArea) {
         this.listaDeArea = listaDeArea;
     }
-    
-    
+
 }
+

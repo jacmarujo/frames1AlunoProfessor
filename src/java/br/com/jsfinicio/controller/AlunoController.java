@@ -6,36 +6,93 @@
 package br.com.jsfinicio.controller;
 
 import br.com.jsfinicio.model.AlunoModel;
+import br.com.jsfinicio.model.CidadeModel;
+import br.com.jsfinicio.model.EstadoModel;
 import br.com.jsfinicio.repository.AlunoRepository;
+import br.com.jsfinicio.repository.CidadeRepository;
+import br.com.jsfinicio.repository.EstadoRepository;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
  * @author Frank
  */
 @ManagedBean
+@SessionScoped
 public class AlunoController {
-    
+
     private AlunoModel alunoModel;
+    private EstadoModel estadoModel;
+    private CidadeModel cidadeModel;
     private AlunoRepository alunoRepository;
+    private EstadoRepository estadoRepository;
+    private CidadeRepository cidadeRepository;
     private List<AlunoModel> listaDeAlunos;
-    
-    public AlunoController(){
-        this.alunoModel = new AlunoModel();
+
+    public AlunoController() {
         this.alunoRepository = new AlunoRepository();
-        this.listaDeAlunos =  new ArrayList<>();
-    }
-    
-    public void salvar(){
-        this.alunoRepository.salvar(this.alunoModel);
+        this.estadoRepository = new EstadoRepository();
+        this.cidadeRepository = new CidadeRepository();
+        this.alunoModel = new AlunoModel();
+        this.estadoModel = new EstadoModel();
+        this.cidadeModel = new CidadeModel();        
+        this.listaDeAlunos = new ArrayList<>();
     }
 
-    public void buscar(){
+    public void salvar() {
+        try {
+            this.estadoModel = this.estadoRepository.buscarPorID(this.estadoModel.getIdEstado());
+            this.cidadeModel = this.cidadeRepository.buscarPorID(this.cidadeModel.getIdCidade());
+            this.alunoModel.setEstado(this.estadoModel);
+            this.alunoModel.setCidadeOrigem(this.cidadeModel);
+            this.alunoRepository.salvar(this.alunoModel);
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage("", "Operação realizada com sucesso!"));
+            this.alunoModel = new AlunoModel();
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage("", "Cadastro não realizado!"));
+        }
+    }
+
+    public void buscarTodos() {
         this.listaDeAlunos = this.alunoRepository.buscarTodos();
     }
-    
+
+    public void buscarPorNome() {
+        this.listaDeAlunos = this.alunoRepository.buscarPorNome(this.alunoModel.getNome());
+    }
+
+    public void excluirPorID(long idpessoa) {
+        this.alunoRepository.excluirPorID(idpessoa);
+    }
+
+    public String editarPorID(long idpessoa) throws IOException {
+        this.alunoModel = this.alunoRepository.buscarPorID(idpessoa);
+
+        return "editarAluno.xhtml?faces-redirect=true";
+    }
+
+    public EstadoRepository getEstadoRepository() {
+        return estadoRepository;
+    }
+
+    public void setEstadoRepository(EstadoRepository estadoRepository) {
+        this.estadoRepository = estadoRepository;
+    }
+
+    public EstadoModel getEstadoModel() {
+        return estadoModel;
+    }
+
+    public void setEstadoModel(EstadoModel estadoModel) {
+        this.estadoModel = estadoModel;
+    }
+
     public AlunoModel getAlunoModel() {
         return alunoModel;
     }
@@ -59,5 +116,23 @@ public class AlunoController {
     public void setListaDeAlunos(List<AlunoModel> listaDeAlunos) {
         this.listaDeAlunos = listaDeAlunos;
     }
+
+    public CidadeModel getCidadeModel() {
+        return cidadeModel;
+    }
+
+    public void setCidadeModel(CidadeModel cidadeModel) {
+        this.cidadeModel = cidadeModel;
+    }
+
+    public CidadeRepository getCidadeRepository() {
+        return cidadeRepository;
+    }
+
+    public void setCidadeRepository(CidadeRepository cidadeRepository) {
+        this.cidadeRepository = cidadeRepository;
+    }
     
+    
+
 }

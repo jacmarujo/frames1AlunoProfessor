@@ -12,15 +12,14 @@ import java.util.List;
 
 /**
  *
- * @author jacson
+ * @author jojo
  */
 public class ProfessorRepository extends Conexao {
 
     public void salvar(ProfessorModel professorModel) {
         super.inicializa();
-        super.getSess().save(professorModel);
+        super.getSess().saveOrUpdate(professorModel);
         super.executar();
-
     }
 
     public List<ProfessorModel> buscarTodos() {
@@ -29,5 +28,28 @@ public class ProfessorRepository extends Conexao {
         listaDeProfessores = super.getSess().createQuery("from ProfessorModel").list();
         super.executar();
         return listaDeProfessores;
+    }
+
+    public List<ProfessorModel> buscarPorNome(String nome) {
+        List<ProfessorModel> listaDeProfessores = new ArrayList<>();
+        super.inicializa();
+        listaDeProfessores = super.getSess().createQuery("from ProfessorModel where UPPER(nome) like '%" + nome.toUpperCase() + "%'").list();
+        super.executar();
+        return listaDeProfessores;
+    }
+
+    public void excluirPorID(long idPessoa) {
+        super.inicializa();
+        ProfessorModel professor = (ProfessorModel) super.getSess().get(ProfessorModel.class, idPessoa);
+        super.getSess().delete(professor);
+        super.executar();
+    }
+
+    public ProfessorModel buscarPorID(long idPessoa) {
+        ProfessorModel professor = new ProfessorModel();
+        super.inicializa();
+        professor = (ProfessorModel) super.getSess().get(ProfessorModel.class, idPessoa);
+        super.executar();
+        return professor;
     }
 }

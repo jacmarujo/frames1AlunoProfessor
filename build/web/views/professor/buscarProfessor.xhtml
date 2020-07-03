@@ -1,21 +1,41 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                template="/template/template.xhtml">
+                template="/template/template.xhtml"
+                xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="conteudo">
         <h3>Resultado da busca por professores</h3>
-        <table class="table" onload="#{professorController.buscar()}">
+        
+        <h:form class="form-inline" style="margin-top: 2%">
+            <div class="form-group mb-2 col-md-2">
+                <label for="lblNome" class="sr-only">lblNome</label>
+                <input type="text" readonly="readonly" class="form-control-plaintext" id="lblNome" value="Nome:"/>
+            </div>
+            <div class="form-group mb-2 col-md-4">
+                <label for="nome" class="sr-only">Nome</label>
+                <h:inputText class="form-control" value="#{professorController.professorModel.nome}"/>
+            </div>
+            <h:commandButton class="btn btn-primary mb-2" value="Buscar" action="#{professorController.buscarPorNome()}"/>
+        </h:form>
+        
+        <table class="table" border="3" style="margin-top: 3%">
             <thead>
-                <tr style="background-color: #007bff">
+                <tr style="background-color: #005cbf">
                     <th scope="col">Id</th>
                     <th scope="col">Nome</th>
+                    <th scope="col">CPF</th>
+                    <th scope="col">RG</th>
                     <th scope="col">E-Mail</th>
                     <th scope="col">Idade</th>
                     <th scope="col">Siape</th>
-                    <th scope="col">Area</th>
+                    <th scope="col">UF</th>
+                    <th scope="col">Cidade</th>
+                    <th scope="col">Login</th>
+                    <th scope="col">Senha</th>
+                    <th colspan="2" style="background-color: #686868"> Opçoes</th>
                 </tr>
             </thead>
             <tbody>
@@ -23,13 +43,29 @@
                     <tr style="background-color: #b8daff">
                         <td style="background-color: #6c757d">#{professor.idpessoa}</td>
                         <td>#{professor.nome}</td>
+                        <td>#{professor.cpf}</td>
+                        <td>#{professor.rg}</td>
                         <td>#{professor.email}</td>
                         <td>#{professor.idade}</td>
                         <td>#{professor.siape}</td>
-                        <td>#{professor.area}</td>
+                        <td>#{professor.estadoOrigem.uf}</td>
+                        <td>#{professor.cidadeOrigem.nome}</td>
+                        <td>#{professor.login}</td>
+                        <td>#{professor.senha}</td>
+                        <td style="background-color: #ffffff">
+                            <h:form>
+                                <p:commandButton icon="ui-icon-pencil" action="#{professorController.editarPorID(professor.idpessoa)}"/>
+                            </h:form>
+                        </td>
+                        <td style="background-color: #ffffff">
+                            <h:form>
+                                <p:commandButton icon="ui-icon-trash" class="btn btn-danger" onclick="return confirm('Deseja realmente excluir o registro?')" action="#{professorController.excluirPorID(professor.idpessoa)}"/>
+                            </h:form>
+                        </td>
                     </tr>
                 </ui:repeat> 
             </tbody>
         </table>
     </ui:define>
 </ui:composition>
+

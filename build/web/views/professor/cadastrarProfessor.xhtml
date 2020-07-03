@@ -2,56 +2,70 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"                
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="/template/template.xhtml"
-                xmlns:f="http://xmlns.jcp.org/jsf/core">
+                xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="conteudo">
-        <div style="margin-bottom: 2%">
-            <h3>Cadastro de Professor</h3>
-        </div>
-        <h:form>
-            <div class="form-row">
-                <div class="form-group col-md-9">
-                    <label for="nome">Nome</label>
-                    <h:inputText value="#{professorController.professorModel.nome}" class="form-control"/>
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="cpf">CPF</label>
-                    <h:inputText value="#{professorController.professorModel.cpf}" class="form-control"/>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-3">
-                    <label for="rg">RG</label>
-                    <h:inputText value="#{professorController.professorModel.rg}" class="form-control"/>
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="ra">SIAPE</label>
-                    <h:inputText value="#{professorController.professorModel.siape}" class="form-control"/>
-                </div>
-                <div class="form-group col-md-1">
-                    <label for="idade">Idade</label>
-                    <h:inputText value="#{professorController.professorModel.idade}" class="form-control"/>
-                </div>
-                <div class="form-group col-md-5">
-                    <label for="email">E-Mail</label>
-                    <h:inputText value="#{professorController.professorModel.email}" class="form-control"/>
-                </div>
-                <div class="form-group col-md-5" onload="#{areaController.buscar()}">
-                    <label for="area">Area:</label> 
-                    <select id="idArea" name= "area" class="form-control">
-                        <ui:repeat value="#{areaController.listaDeArea}" var="area">
 
-                            <option value="#{professorController.professorModel.area}" class="form-control" > Id: #{area.idArea} - #{area.descricao} 
-
-                            </option>
-                        </ui:repeat>
-                    </select>
-                    
-                </div>             
+        <h:form id="formCadastro" style="background-color: #80bdff">
+            <div style="margin-bottom: 2%">
+                <h3 align="center" style="color: white">Cadastro de Professor</h3>
             </div>
-            <h:commandButton class="btn btn-primary" value="Salvar" action="#{professorController.salvar()}"/>
+            <p:tabView>
+                <p:tab title="Dados Pessoas">
+                    <p:separator/>
+                    <h:panelGrid columns="2" cellpadding="2">
+                        <p:outputLabel for="nome" value="Nome:"/>
+                        <p:inputText id="nome" value="#{professorController.professorModel.nome}" size="55" placeholder="Nome completo"/>
+                        <p:outputLabel value="E-mail:"/>
+                        <p:inputText value="#{professorController.professorModel.email}" size="55" placeholder="Ex: email@dominio.com.br"/>
+                        
+                        <p:outputLabel for="cpf" value="CPF:"/>
+                        <p:inputText id="cpf" size="15" value="#{professorController.professorModel.cpf}" placeholder="999.999.999-99"/>
+                        <p:outputLabel value="RG:"/>
+                        <p:inputText value="#{professorController.professorModel.rg}" size="20" />
+                        <p:outputLabel for="siape" value="SIAPE:"/>
+                        <p:inputText id="siape" value="#{professorController.professorModel.siape}" maxlength="10" size="20"/>
+                        <p:outputLabel value="IDADE:"/>            
+                        <p:inputText maxlength="2" value="#{professorController.professorModel.idade}" size="5" />
+                        
+                        <div >
+                            <div onload="#{estadoController.buscarTodos()}">
+                                <label> ESTADO: </label>
+                                <p:selectOneMenu filter="true" id="idEstado" value="#{professorController.estadoModel.idEstado}">
+                                    <f:selectItems value="#{estadoController.listaDeEstados}" var="estado" 
+                                                   itemLabel="#{estado.uf}" itemValue="#{estado.idEstado}" />
+                                    <!--<p:ajax listener="#{professorController.popularPorEstado()}" update=":formCadastro:idCidade" />-->
+                                </p:selectOneMenu>
+                            </div>
+                            <div onload="#{cidadeController.buscarTodos()}">
+                                <label> CIDADE </label>
+                                <p:selectOneMenu filter="true" id="idCidade" value="#{professorController.cidadeModel.idCidade}">
+                                    <f:selectItems value="#{cidadeController.listaDeCidades}" var="cidade"
+                                                   itemLabel="#{cidade.nome}" itemValue="#{cidade.idCidade}" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                    </h:panelGrid>
+                </p:tab>
+                <p:tab title="Dados de Acesso">
+                    <h:panelGrid columns="2" cellpadding="1">
+                        <p:outputLabel for="login" value="LOGIN:"/>               
+                        <p:inputText id="login" value="#{professorController.professorModel.login}" class="form-control"
+                                     required="true" requiredMessage="O campo LOGIN é Obrigatorio!"/>
+                        <p:outputLabel for="senha" value="SENHA:"/>        
+                        <h:inputSecret id="senha" value="#{professorController.professorModel.senha}" class="form-control"
+                                     required="true" requiredMessage="O campo SENHA é Obrigatorio!" maxlength="3"/>
+                    </h:panelGrid>
+                </p:tab>
+            </p:tabView>
+            
+            <h:commandButton class="btn btn-primary" value="Salvar" action="#{professorController.salvar()}" />
+            
+            <br/> * Campos obrigatórios
+
         </h:form>
     </ui:define>
 </ui:composition>

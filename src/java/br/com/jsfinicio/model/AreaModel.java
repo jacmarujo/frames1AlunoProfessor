@@ -24,16 +24,16 @@ import org.hibernate.annotations.CascadeType;
  */
 @Entity
 @Table(name = "area")
-public class AreaModel implements Serializable {
-
+public class AreaModel implements Serializable{
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idArea;
-
+    
     @Column(length = 40, nullable = false)
     private String descricao;
-
-    @OneToMany(mappedBy = "area", fetch = FetchType.LAZY)
+    
+    @OneToMany(mappedBy="area", fetch = FetchType.LAZY)
     @Cascade(CascadeType.SAVE_UPDATE)
     private List<ProfessorModel> listaDeProfessores;
 
@@ -52,7 +52,7 @@ public class AreaModel implements Serializable {
     public void setIdArea(int idArea) {
         this.idArea = idArea;
     }
-
+    
     public String getDescricao() {
         return descricao;
     }

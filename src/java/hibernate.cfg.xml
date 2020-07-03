@@ -40,18 +40,20 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-configuration>
-  <session-factory>
-    <!--property name="hibernate.dialect">org.hibernate.dialect.DerbyDialect</property-->
-    <property name="hibernate.dialect">org.hibernate.dialect.DerbyTenFiveDialect</property>
-    <property name="hibernate.connection.driver_class">org.apache.derby.jdbc.ClientDriver</property>
-    <property name="hibernate.connection.url">jdbc:derby://localhost:1527/frames1</property>
-    <property name="hibernate.connection.username">nbuser</property>
-    <property name="hibernate.connection.password">nbuser</property>
-    <property name="hibernate.hbm2ddl.auto">update</property>
-    <mapping class="br.com.jsfinicio.model.AlunoModel"/>
-    <mapping class="br.com.jsfinicio.model.AreaModel"/>
-    <mapping class="br.com.jsfinicio.model.DisciplinaModel"/>
-    <mapping class="br.com.jsfinicio.model.ProfessorModel"/>
-    <mapping class="br.com.jsfinicio.model.PessoaModel"/>
-  </session-factory>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.DerbyDialect</property>
+        <property name="hibernate.connection.driver_class">org.apache.derby.jdbc.ClientDriver</property>
+        <property name="hibernate.connection.url">jdbc:derby://localhost:1527/frames1</property>
+        <property name="hibernate.connection.username">nbuser</property>
+        <property name="hibernate.connection.password">nbuser</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.show_sql">true</property>
+        <mapping class="br.com.jsfinicio.model.AlunoModel"/>
+        <mapping class="br.com.jsfinicio.model.AreaModel"/>
+        <mapping class="br.com.jsfinicio.model.DisciplinaModel"/>
+        <mapping class="br.com.jsfinicio.model.ProfessorModel"/>
+        <mapping class="br.com.jsfinicio.model.PessoaModel"/>
+        <mapping class="br.com.jsfinicio.model.EstadoModel"/>
+        <mapping class="br.com.jsfinicio.model.CidadeModel"/>
+    </session-factory>
 </hibernate-configuration>

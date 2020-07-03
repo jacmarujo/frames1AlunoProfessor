@@ -7,6 +7,7 @@ package br.com.jsfinicio.model;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -33,21 +34,31 @@ public class DisciplinaModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idDisciplina;
-
+    @Column(length = 75, nullable = false)
     private String nome;
-    private String cargaHorariaTotal;
+    @Column(length = 20, nullable = false)
+    private String cargaHoraria;
+    @Column(length = 40, nullable = false)
+    private String descricao;
+    
 
     @ManyToMany
-    @JoinTable(name = "disciplinas_alunos",
+    @JoinTable(name = "Aluno_Disciplina",
             joinColumns = @JoinColumn(name = "idDisciplina"),
-            inverseJoinColumns = @JoinColumn(name = "idPessoaAluno"))
+            inverseJoinColumns = @JoinColumn(name = "idAluno"))
     private List<AlunoModel> listaDeAlunos;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idPessoaProfessor", insertable = true, updatable = true)
+    @JoinColumn(name = "idProfessor", insertable = true, updatable = true)
     @Fetch(FetchMode.JOIN)
     @Cascade(CascadeType.SAVE_UPDATE)
     private ProfessorModel professor;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idArea", insertable = true, updatable = true)
+    @Fetch(FetchMode.JOIN)
+    @Cascade(CascadeType.SAVE_UPDATE)
+    private AreaModel area;
 
     public int getIdDisciplina() {
         return idDisciplina;
@@ -65,12 +76,12 @@ public class DisciplinaModel implements Serializable {
         this.nome = nome;
     }
 
-    public String getCargaHorariaTotal() {
-        return cargaHorariaTotal;
+    public String getCargaHoraria() {
+        return cargaHoraria;
     }
 
-    public void setCargaHorariaTotal(String cargaHorariaTotal) {
-        this.cargaHorariaTotal = cargaHorariaTotal;
+    public void setCargaHoraria(String cargaHoraria) {
+        this.cargaHoraria = cargaHoraria;
     }
 
     public List<AlunoModel> getListaDeAlunos() {
@@ -89,5 +100,20 @@ public class DisciplinaModel implements Serializable {
         this.professor = professor;
     }
 
-    
+    public AreaModel getArea() {
+        return area;
+    }
+
+    public void setArea(AreaModel area) {
+        this.area = area;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }    
+
 }
